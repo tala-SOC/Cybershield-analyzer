@@ -45,4 +45,108 @@ The application examines selected security configurations, gathers domain and se
 
 ## ⚙️ How It Works
 
-1. Enter a website URL into
+1. Enter a website URL into the analyzer.
+2. Submit the URL to initiate the analysis.
+3. The application collects available website and domain information.
+4. Selected security indicators are inspected, including HTTPS and HTTP security headers.
+5. The collected findings are evaluated to generate an indicative risk assessment.
+6. A structured report is displayed with the analysis results.
+7. Download the generated report as a PDF.
+
+---
+
+## 🚀 Run Locally
+
+### Prerequisites
+
+- Python 3.10 or later
+- Git
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/tala-SOC/Cybershield-analyzer.git
+```
+
+### 2. Navigate to the project directory
+
+```bash
+cd Cybershield-analyzer
+```
+
+### 3. Create a virtual environment
+
+```bash
+python -m venv venv
+```
+
+### 4. Activate the environment
+
+**Windows:**
+
+```bash
+venv\Scripts\activate
+```
+
+**Linux / macOS:**
+
+```bash
+source venv/bin/activate
+```
+
+### 5. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 6. Start the application
+
+```bash
+python app.py
+```
+
+Open your browser:
+
+```text
+http://127.0.0.1:5000
+```
+
+---
+
+## 🔍 Security Assessment Scope
+
+CyberShield Analyzer focuses on selected observable website security indicators, including:
+
+- HTTPS availability
+- SSL-related information
+- HTTP security headers
+- DNS and IP information
+- Server response metadata
+- Security configuration gaps
+
+**Disclaimer:** The risk score is an indicative assessment based on the checks implemented in the application. CyberShield Analyzer is not a comprehensive penetration-testing tool and does not guarantee that a website is secure.
+
+---
+
+## 🔐 Responsible Use
+
+This project is intended for educational purposes and authorized website security assessment.
+
+Only analyze websites that you own or have explicit permission to assess.
+
+---
+
+## 👩‍💻 Developer
+
+**Tala Ammar**
+
+Cybersecurity Student | Secure Web Development
+
+- GitHub: [tala-SOC](https://github.com/tala-SOC)
+- Project Repository: [CyberShield Analyzer](https://github.com/tala-SOC/Cybershield-analyzer)
+- Live Application: [cybershieldanalyzer-ten.vercel.app](https://cybershieldanalyzer-ten.vercel.app/)
+
+---
+
+*Built to explore practical web security concepts through hands-on development.*
