@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+
+.vscode/
+
+.env
+
+CyberShield_Security_Report.pdf
+
+security.log
+analyzer.py

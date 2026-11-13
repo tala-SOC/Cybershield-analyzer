@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberShield Analyzer | URL Security</title>
+    <meta name="description" content="Analyze website URLs and review security indicators, HTTPS, SSL certificates, DNS, and security headers.">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".scan-form");
+    const loader = document.getElementById("cyber-loader");
+    const message = document.getElementById("loader-message");
+
+    if (!form || !loader) return;
+
+    let submitting = false;
+
+    form.addEventListener("submit", function (event) {
+        if (submitting) {
+            event.preventDefault();
+            return;
+        }
+
+        if (!form.checkValidity()) return;
+
+        submitting = true;
+        loader.classList.add("is-visible");
+        loader.setAttribute("aria-hidden", "false");
+
+        if (message) {
+            message.textContent = "Connecting to the target website...";
+        }
+
+        const button = form.querySelector('button[type="submit"]');
+
+        if (button) {
+            button.disabled = true;
+            button.style.opacity = "0.7";
+            button.style.cursor = "wait";
+        }
+
+        const messages = [
+            "Connecting to the target website...",
+            "Checking HTTPS and SSL indicators...",
+            "Inspecting security headers...",
+            "Collecting domain and DNS information...",
+            "Preparing the security report..."
+        ];
+
+        let index = 0;
+
+        const messageTimer = window.setInterval(function () {
+            index = (index + 1) % messages.length;
+
+            if (message && loader.classList.contains("is-visible")) {
+                message.textContent = messages[index];
+            }
+        }, 1800);
+
+        window.addEventListener("pagehide", function () {
+            window.clearInterval(messageTimer);
+        }, { once: true });
+    });
+});
+</script>
+<body> 
+   <div class="background" aria-hidden="true"></div>
+
+<div class="ambient-scene" aria-hidden="true">
+    <!-- Moving stars -->
+    <div class="star-field star-field-one"></div>
+    <div class="star-field star-field-two"></div>
+
+    <!-- Floating sparkles -->
+    <span class="floating-mark mark-one">✦</span>
+    <span class="floating-mark mark-two">✧</span>
+    <span class="floating-mark mark-three">✦</span>
+    <span class="floating-mark mark-four">·</span>
+    <span class="floating-mark mark-five">✧</span>
+    <span class="floating-mark mark-six">✦</span>
+
+    <!-- Decorative security notifications -->
+    <div class="floating-notice notice-one">
+        <span class="notice-icon">⌁</span>
+        <div class="notice-copy">
+            <strong>SECURITY TIP</strong>
+            <small>Think before you click</small>
+        </div>
+        <span class="notice-dot"></span>
+    </div>
+
+    <div class="floating-notice notice-two">
+        <span class="notice-icon">◇</span>
+        <div class="notice-copy">
+            <strong>URL AWARENESS</strong>
+            <small>Verify unfamiliar links</small>
+        </div>
+        <span class="notice-dot"></span>
+    </div>
+
+    <div class="floating-notice notice-three">
+        <span class="notice-icon">✧</span>
+        <div class="notice-copy">
+            <strong>STAY PROTECTED</strong>
+            <small>Check before you trust</small>
+        </div>
+        <span class="notice-dot"></span>
+    </div>
+</div>
+<!-- CyberShield Loading Overlay -->
+<div class="cyber-loader" id="cyber-loader" aria-hidden="true">
+    <div class="loader-card">
+        <div class="loader-visual">
+            <div class="loader-ring loader-ring-outer"></div>
+            <div class="loader-ring loader-ring-inner"></div>
+            <div class="loader-core">✦</div>
+            <div class="loader-scan-line"></div>
+        </div>
+
+        <h2 class="loader-title">Analyzing <span>URL</span></h2>
+
+        <p class="loader-message" id="loader-message">
+            Initializing security checks...
+        </p>
+
+        <div class="loader-progress">
+            <span></span>
+        </div>
+
+        <div class="loader-footer">
+            <span class="loader-status-dot"></span>
+            CYBERSHIELD SECURITY ENGINE
+        </div>
+    </div>
+</div>
+    <main class="home-wrapper">
+        <nav class="topbar">
+            <a class="brand" href="/">
+                <span class="brand-icon">✦</span>
+                <span>Cyber<span class="accent">Shield</span></span>
+            </a>
+
+            <span class="topbar-label">
+                <span class="status-dot"></span>
+                URL SECURITY ANALYZER
+            </span>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-badge">
+                <span>✦</span>
+                WEBSITE & LINK ANALYSIS
+            </div>
+
+            <h1>
+                Know Before<br>
+                You <span class="gradient-text">Trust.</span>
+            </h1>
+
+            <p class="hero-description">
+                Analyze website URLs, review security configurations,
+                and identify potential warning signs before trusting a link.
+            </p>
+
+            <form action="/scan" method="POST" class="scan-form">
+                <label for="url-input">Website URL</label>
+
+                <div class="url-input-wrapper">
+                    <span class="url-icon">↗</span>
+
+                    <input
+                        id="url-input"
+                        type="text"
+                        name="url"
+                        placeholder="https://example.com"
+                        class="url-input"
+                        autocomplete="url"
+                        spellcheck="false"
+                        required
+                    >
+
+                    <button type="submit" class="scan-button">
+                        Analyze URL
+                        <span>→</span>
+                    </button>
+                </div>
+
+                <p class="input-hint">
+                    Enter a company website, a familiar domain, or an unfamiliar link.
+                </p>
+            </form>
+
+            <div class="trust-note">
+                <span class="trust-icon">ⓘ</span>
+                <span>
+                    Security indicators help assess risk, but they cannot guarantee
+                    that a website is safe or malicious.
+                </span>
+            </div>
+        </section>
+
+        <section class="features">
+            <article class="feature-card">
+                <div class="feature-icon">⌁</div>
+                <h3>HTTPS & SSL</h3>
+                <p>Review encrypted connections and certificate status.</p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">◎</div>
+                <h3>Domain & DNS</h3>
+                <p>Inspect domain connectivity and resolved IP information.</p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">⬡</div>
+                <h3>Security Headers</h3>
+                <p>Check important browser security configuration headers.</p>
+            </article>
+        </section>
+
+        <footer class="footer">
+            <span>CYBERSHIELD ANALYZER</span>
+            <span>Understand the signals. Make informed decisions.</span>
+        </footer>
+    </main>
+</body>
+</html>

@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CyberShield URL security analysis report">
+    <title>CyberShield | Security Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='report.js') }}" defer></script>
+</head>
+<script>
+window.addEventListener("load", function () {
+    const loader = document.getElementById("cyber-loader");
+
+    if (!loader) return;
+
+    window.setTimeout(function () {
+        loader.classList.add("is-hiding");
+
+        window.setTimeout(function () {
+            loader.classList.remove("is-visible", "is-hiding");
+            loader.setAttribute("aria-hidden", "true");
+        }, 450);
+    }, 650);
+});
+</script>
+<body class="report-page">
+   <div class="background" aria-hidden="true"></div>
+
+<div class="ambient-scene" aria-hidden="true">
+     <!-- Additional floating stars -->
+<span class="floating-mark report-star star-seven">✧</span>
+<span class="floating-mark report-star star-eight">✦</span>
+<span class="floating-mark report-star star-nine">·</span>
+<span class="floating-mark report-star star-ten">✧</span>
+    <!-- Moving stars -->
+    <div class="star-field star-field-one"></div>
+    <div class="star-field star-field-two"></div>
+
+    <!-- Floating sparkles -->
+    <span class="floating-mark mark-one">✦</span>
+    <span class="floating-mark mark-two">✧</span>
+    <span class="floating-mark mark-three">✦</span>
+    <span class="floating-mark mark-four">·</span>
+    <span class="floating-mark mark-five">✧</span>
+    <span class="floating-mark mark-six">✦</span>
+
+</div>
+<!-- CyberShield Loading Overlay -->
+<div class="cyber-loader" id="cyber-loader" aria-hidden="true">
+    <div class="loader-card">
+        <div class="loader-visual">
+            <div class="loader-ring loader-ring-outer"></div>
+            <div class="loader-ring loader-ring-inner"></div>
+            <div class="loader-core">✦</div>
+            <div class="loader-scan-line"></div>
+        </div>
+
+        <h2 class="loader-title">Analyzing <span>URL</span></h2>
+
+        <p class="loader-message" id="loader-message">
+            Initializing security checks...
+        </p>
+
+        <div class="loader-progress">
+            <span></span>
+        </div>
+
+        <div class="loader-footer">
+            <span class="loader-status-dot"></span>
+            CYBERSHIELD SECURITY ENGINE
+        </div>
+    </div>
+</div>
+    <main class="report-wrapper">
+        <nav class="topbar report-topbar">
+            <a class="brand" href="/">
+                <span class="brand-icon">✦</span>
+                <span>Cyber<span class="accent">Shield</span></span>
+            </a>
+            <a class="back-link" href="/">← Analyze Another URL</a>
+        </nav>
+
+        {% if report.error %}
+            <section class="panel error-panel">
+                <div class="large-icon">!</div>
+                <h1>Analysis Could Not Be Completed</h1>
+                <p>{{ report.error }}</p>
+                <a href="/" class="secondary-button">Try Again</a>
+            </section>
+
+        {% else %}
+            <header class="report-heading">
+                <span class="hero-badge">URL SECURITY ANALYSIS</span>
+                <h1>Security <span class="gradient-text">Report</span></h1>
+                <p>Review the security indicators detected for this URL.</p>
+            </header>
+
+            <section class="panel">
+                <span class="eyebrow">ANALYZED TARGET</span>
+                <h2 class="target-domain">{{ report.target }}</h2>
+                <p class="url-display">{{ report.url }}</p>
+                <div class="target-actions">
+    <button
+        type="button"
+        class="copy-button"
+        id="copy-url"
+        data-copy="{{ report.url }}">
+        <span>▣</span> Copy URL
+    </button>
+
+    <span class="copy-feedback" id="copy-feedback"
+          aria-live="polite"></span>
+</div>
+
+                <div class="notice">
+                    <span>ⓘ</span>
+                    This report reflects the checks currently implemented by
+                    CyberShield. It does not guarantee that a link is safe
+                    or confirm that it is malicious.
+                </div>
+            </section>
+
+            <section class="score-grid">
+                <article class="score-card">
+                    <span class="score-label">SECURITY SCORE</span>
+                    <div class="score-value">
+                      <span class="count-up"
+                        data-count="{{ report.security_score }}">0</span>
+                           <small>/100</small>
+                    </div>
+                    </div>
+                    <div class="score-track">
+    <progress
+        class="score-fill security-fill animated-progress"
+        value="0"
+        max="100"
+        data-target="{{ report.security_score }}"
+        aria-label="Security score">
+    </progress>
+</div>
+                    <p>Based on the configured checks that passed.</p>
+                </article>
+
+                <article class="score-card">
+                    <span class="score-label">RISK INDICATOR</span>
+                    <div class="score-value">
+                    <span class="count-up"
+                       data-count="{{ report.risk_score }}">0</span>
+                          <small>/100</small>
+                       </div>
+  <div class="score-track">
+    <progress
+        class="score-fill risk-fill animated-progress"
+        value="0"
+        max="100"
+        data-target="{{ report.risk_score }}"
+        aria-label="Risk score">
+    </progress>
+</div>
+                    <p>This is a rule-based indicator, not a phishing probability.</p>
+                </article>
+            </section>
+
+            <section class="panel">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">CONNECTION DETAILS</span>
+                        <h2>Website Information</h2>
+                    </div>
+                    <span class="section-icon">⌁</span>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span>HTTP Status</span>
+                        <strong>{{ report.status }}</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Response Time</span>
+                        <strong>{{ report.response_time }} seconds</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Server</span>
+                        <strong>{{ report.server }}</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Content Type</span>
+                        <strong>{{ report.content_type }}</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>DNS Status</span>
+                        <strong>{{ report.dns }}</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>IP Address</span>
+                        <strong>{{ report.ip }}</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">ENCRYPTION</span>
+                        <h2>HTTPS & SSL Certificate</h2>
+                    </div>
+                    <span class="section-icon">⌑</span>
+                </div>
+
+                <div class="check-row">
+                    <div>
+                        <strong>HTTPS Connection</strong>
+                        <p>Checks whether the URL uses HTTPS.</p>
+                    </div>
+                    {% if report.https %}
+                        <span class="result-pill result-good">Enabled</span>
+                    {% else %}
+                        <span class="result-pill result-bad">Not Enabled</span>
+                    {% endif %}
+                </div>
+
+                {% if report.ssl %}
+                    <div class="check-row">
+                        <div>
+                            <strong>SSL Certificate</strong>
+                            <p>Checks the TLS certificate connection.</p>
+                        </div>
+                        {% if report.ssl.valid %}
+                            <span class="result-pill result-good">Valid</span>
+                        {% else %}
+                            <span class="result-pill result-bad">Check Failed</span>
+                        {% endif %}
+                    </div>
+
+                    {% if not report.ssl.valid and report.ssl.error %}
+                        <div class="notice">
+                            <span>!</span>
+                            {{ report.ssl.error }}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </section>
+
+            <section class="panel">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">BROWSER PROTECTION</span>
+                        <h2>Security Headers</h2>
+                    </div>
+                    <span class="section-icon">⬡</span>
+                </div>
+
+                <p class="section-description">
+                    Missing headers may indicate areas for improvement, but
+                    their absence alone does not prove that a URL is malicious.
+                </p>
+
+                <div class="header-columns">
+                    <div class="header-list">
+                        <h3 class="good-heading">Detected Headers</h3>
+                        {% if report.enabled_headers %}
+                            <ul>
+                                {% for header in report.enabled_headers %}
+                                    <li>
+                                        <span class="list-check">✓</span>
+                                        {{ header }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="empty-state">No listed headers detected.</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="header-list">
+                       <details class="interactive-details" open>
+    <summary class="warning-heading">
+        Missing Headers
+        <span>⌄</span>
+    </summary>
+
+    {% if report.missing_headers %}
+        <ul>
+            {% for header in report.missing_headers %}
+                <li>
+                    <span class="list-warning">!</span>
+                    {{ header }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="empty-state">
+            All listed headers were detected.
+        </p>
+    {% endif %}
+</details>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">ASSESSMENT</span>
+                        <h2>Overall Security Rating</h2>
+                    </div>
+                </div>
+                <p class="rating-text">{{ report.risk }}</p>
+                <p class="section-description">
+                    This rating summarizes the current checks. It is not
+                    a verified reputation or malware classification for the domain.
+                </p>
+            </section>
+
+            <section class="panel">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">RECOMMENDED ACTIONS</span>
+                        <h2>Security Recommendations</h2>
+                    </div>
+                    <span class="section-icon">✧</span>
+                </div>
+
+                {% if report.recommendations %}
+                    <ul class="recommendation-list">
+                        {% for recommendation in report.recommendations %}
+                            <li>
+                                <span class="recommendation-icon">→</span>
+                                <span>{{ recommendation }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="empty-state">
+                        No recommendations were returned by the current checks.
+                    </p>
+                {% endif %}
+            </section>
+
+            <section class="interpretation">
+                <h3>Before you trust a link</h3>
+                <p>
+                    Check the domain spelling and confirm that the URL came
+                    from a source you trust. HTTPS protects the connection,
+                    but it does not establish that the website itself is legitimate.
+                </p>
+            </section>
+
+            <div class="report-actions">
+                <form action="/download-pdf" method="POST">
+                    <input type="hidden" name="url" value="{{ report.url }}">
+                    <button type="submit" class="scan-button">
+                        Download PDF Report <span>↓</span>
+                    </button>
+                </form>
+
+                <a href="/" class="secondary-button">Analyze Another URL</a>
+            </div>
+        {% endif %}
+
+        <footer class="footer report-footer">
+            <span>CYBERSHIELD ANALYZER</span>
+            <span>Security indicators, not guarantees.</span>
+        </footer>
+    </main>
+    <button
+    type="button"
+    id="back-to-top"
+    aria-label="Back to top"
+    title="Back to top">
+    ↑
+</button>
+</body>
+</html>
